@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>order | Arfa</title>
+     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+<div class="main-con">
+    <header class="header">
+      <div class="first-heading">
+        <div class="log">
+         <img src="https://i.ibb.co/kgb2V0TY/586448874-122103592989126770-9149194531680454724-n.jpg" alt="logo">
+        <h1 data-aos="fade-up" data-aos-duration="2000"> ARFA RESTAURANT </h1>
+        </div>
+        </div>
+        <div class="nav">
+          <button class="hamburger">&#9776;</button>
+        <nav>
+        <ul>
+            <li><a href="index.html"> Home</a></li>
+             <li><a href="menu.html" > Menu</a></li>
+              <li><a href="about.html"> About</a></li>
+               <li class="order-btnn"><a href="order.html"> Order Now </a></li>
+        </ul>
+        </nav>
+        </div>
+        </header>
+         <section class="heroooo">
+    <div class="hero-content">
+      <h1 data-aos="fade-up" data-aos-duration="2000">Order Now</h1>
+      <p data-aos="fade-up" data-aos-duration="2000" class="subtext">Cooking Since 1980</p>
+    </div>
+  </section>
+<section  class="form">
+ 
+  <br/>
+  <br/>
+  <br/>
+ <section class="order-section">
+   <div class="back-btn-container">
+  <a data-aos="fade-up" data-aos-duration="2000" href="menu.html"  class="back-btn">← Back to Menu TO Add Item</a>
+</div>
+
+    <h2 data-aos="fade-up" data-aos-duration="2000">Your Order Summary</h2>
+
+    <div id="orderList"></div>
+    <p class="total" id="totalPrice"></p>
+
+    <form onsubmit="submitOrder(event)">
+      <input type="text" id="customerName" placeholder="Your Name" required>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <textarea id="address" placeholder="Delivery Address" rows="3" required></textarea>
+      <button class="submit-btn" type="submit">Place Order</button>
+    </form>
+  </section>
+   <footer class="footer">
+  <div class="footer-container">
+    
+    <div class="footer-section">
+      <h3>ARFA</h3>
+      <p>Authentic Desi Flavours — Since 1999</p>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="menu.html" >Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="order.html">Order</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-section">
+      <h3>Contact</h3>
+      <p>+92 3302715605</p>
+      <p>anasali4059@gmail.com</p>
+      <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="https://www.facebook.com/share/1CPhe6TRxA/">Facebook</a>
+        <a href="#">Google</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <p>© ARFA Restaurant. All rights reserved.</p>
+  </div>
+</footer>
+ <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init(); 
+  const btn = document.querySelector(".hamburger");
+  const menu = document.querySelector(".nav nav");
+
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("active");
+  });
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const orderList = document.getElementById("orderList");
+    const totalPriceElem = document.getElementById("totalPrice");
+
+    function renderCart() {
+  orderList.innerHTML = "";
+  if (cart.length === 0) {
+    orderList.innerHTML = "<p>No items in your order.</p>";
+    totalPriceElem.textContent = "";
+    return;
+  }
+
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.price;
+    orderList.innerHTML += `
+  <div class="order-item">
+    <p><strong>${index + 1}. ${item.name}</strong> — Rs. ${item.price}</p>
+    <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+  </div>
+`;
+  });
+
+  totalPriceElem.textContent = "Total: Rs. " + total;
+}
+
+renderCart();
+function removeItem(index) {
+  cart.splice(index, 1); 
+  localStorage.setItem("cart", JSON.stringify(cart)); 
+  renderCart(); 
+}
+
+
+    function submitOrder(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("customerName").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+
+ 
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+ 
+  alert(`Congratulations! Order Placed Successfully!\n\nCustomer: ${name}\nPhone: ${phone}\nTotal Bill: Rs. ${total}\n\nItems:\n${cart.map(i => "- " + i.name).join("\n")}`);
+
+ 
+  localStorage.removeItem("cart");
+  cart = [];
+  renderCart();
+}
+
+  </script>
+
+</body>
+</html>
